@@ -19,12 +19,12 @@ export const Content = styled.div`
   max-width: 700px;
 
   img {
-    max-width: 500px;
+    max-width: 300px;
   }
 
   form {
     margin: 80px 0;
-    width: 340px;
+    max-width: 340px;
     text-align: center;
 
     h1 {
