@@ -5,7 +5,7 @@ export const Container = styled.button`
   color: #fff;
   font-weight: 500;
   height: 56px;
-  border-radius: 20px;
+  border-radius: 10px;
   border: 0;
   padding: 0 16px;
   width: 100%;

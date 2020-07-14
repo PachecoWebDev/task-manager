@@ -1,8 +1,10 @@
 import React, { useCallback, useRef } from 'react';
-import { FiMail, FiLock } from 'react-icons/fi';
+import { FiUser, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
+
+import { useAuth } from '../../hooks/auth';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import LogoImg from '../../assets/world.svg';
@@ -12,31 +14,44 @@ import Button from '../../comopnents/Button';
 
 import { Container, Content } from './styles';
 
+interface LogInFormData {
+  login: string;
+  senha: string;
+}
+
 const LogIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const handleSubmit = useCallback(async (data: object) => {
-    try {
-      formRef.current?.setErrors({});
+  const { logIn, administrador, nome } = useAuth();
 
-      const schema = Yup.object().shape({
-        email: Yup.string()
-          .required('Preencha com seu e-mail')
-          .email('Digite um e-mail válido'),
-        password: Yup.string().required('Preencha com sua senha'),
-      });
+  const handleSubmit = useCallback(
+    async (data: LogInFormData) => {
+      try {
+        formRef.current?.setErrors({});
 
-      await schema.validate(data, {
-        abortEarly: false,
-      });
-    } catch (err) {
-      console.log(err);
+        const schema = Yup.object().shape({
+          login: Yup.string().required('Preencha com seu usuário'),
+          senha: Yup.string().required('Preencha com sua senha'),
+        });
 
-      const errors = getValidationErrors(err);
+        await schema.validate(data, {
+          abortEarly: false,
+        });
 
-      formRef.current?.setErrors(errors);
-    }
-  }, []);
+        logIn({
+          login: data.login,
+          senha: data.senha,
+        });
+      } catch (err) {
+        console.log(err);
+
+        const errors = getValidationErrors(err);
+
+        formRef.current?.setErrors(errors);
+      }
+    },
+    [logIn],
+  );
 
   return (
     <Container>
@@ -46,10 +61,10 @@ const LogIn: React.FC = () => {
         <Form ref={formRef} onSubmit={handleSubmit}>
           <h1>Faça seu login</h1>
 
-          <Input name="email" placeholder="E-mail" icon={FiMail} />
+          <Input name="login" placeholder="Usuário" icon={FiUser} />
 
           <Input
-            name="password"
+            name="senha"
             type="password"
             placeholder="Senha"
             icon={FiLock}
