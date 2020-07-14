@@ -1,5 +1,4 @@
 import React, { createContext, useCallback, useState, useContext } from 'react';
-import querystring from 'querystring';
 import api from '../services/api';
 
 interface LogInCredentials {
@@ -22,7 +21,7 @@ interface AuthContextData {
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-const AuthProvider: React.FC = ({ children }) => {
+const AuthUser: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
     const administrador = localStorage.getItem(
       '@CadastroDePaises:administrador',
@@ -83,10 +82,10 @@ function useAuth(): AuthContextData {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error('useAuth must be used whitin an AuthProvider');
+    throw new Error('useAuth must be used whitin an AuthUser');
   }
 
   return context;
 }
 
-export { AuthProvider, useAuth };
+export { AuthUser, useAuth };

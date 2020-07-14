@@ -3,14 +3,16 @@ import { FiUser, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
+import { useHistory } from 'react-router-dom';
 
 import { useAuth } from '../../hooks/auth';
+import { useToast } from '../../hooks/toast';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import LogoImg from '../../assets/world.svg';
 
-import Input from '../../comopnents/Input';
-import Button from '../../comopnents/Button';
+import Input from '../../components/Input';
+import Button from '../../components/Button';
 
 import { Container, Content } from './styles';
 
@@ -21,8 +23,9 @@ interface LogInFormData {
 
 const LogIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
-
-  const { logIn, administrador, nome } = useAuth();
+  const { logIn } = useAuth();
+  const { addToast } = useToast();
+  const history = useHistory();
 
   const handleSubmit = useCallback(
     async (data: LogInFormData) => {
@@ -38,19 +41,29 @@ const LogIn: React.FC = () => {
           abortEarly: false,
         });
 
-        logIn({
+        await logIn({
           login: data.login,
           senha: data.senha,
         });
+
+        history.push('/dashboard');
       } catch (err) {
-        console.log(err);
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
 
-        const errors = getValidationErrors(err);
+          formRef.current?.setErrors(errors);
 
-        formRef.current?.setErrors(errors);
+          return;
+        }
+
+        addToast({
+          type: 'error',
+          title: 'Erro na autenticação',
+          description: 'Ocorreu um erro ao fazer login, cheque as credenciais.',
+        });
       }
     },
-    [logIn],
+    [logIn, addToast, history],
   );
 
   return (
