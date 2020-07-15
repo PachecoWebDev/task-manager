@@ -14,15 +14,6 @@
 
 
 </p>
-<p align="center">
-<a href="https://nodejs.org/en/" rel="nofollow">
-    <img src="https://camo.githubusercontent.com/aed2c3876a97dab0bdadd00ece0a12f9291d1dab/68747470733a2f2f696d672e736869656c64732e696f2f7374617469632f76313f6c6162656c3d4e6f6465266d6573736167653d4a5326636f6c6f723d626c75653f7374796c653d706c6173746963266c6f676f3d4e6f64652e6a73" alt="NodeJS" data-canonical-src="https://img.shields.io/static/v1?label=Node&amp;message=JS&amp;color=blue?style=plastic&amp;logo=Node.js" style="max-width:100%;">
-  </a>
-
-  <a href="https://reactjs.org/" rel="nofollow">
-    <img src="https://camo.githubusercontent.com/2fa18e428de4a1b7917b25f79b23633301dc152b/68747470733a2f2f696d672e736869656c64732e696f2f7374617469632f76313f6c6162656c3d5265616374266d6573736167653d4a5326636f6c6f723d626c75653f7374796c653d706c6173746963266c6f676f3d5265616374" alt="ReactJS" data-canonical-src="https://img.shields.io/static/v1?label=React&amp;message=JS&amp;color=blue?style=plastic&amp;logo=React" style="max-width:100%;">
-  </a>
-  </p>
 
 ## Projeto
 
@@ -74,7 +65,7 @@ Este projeto foi desenvolvido com as seguintes Ferramentas:
 - [Yup][yup]
 - [VS Code][vs]
 
-## Requisitos
+## Requisitos Alcançados
 
 - [x] Tela de login, solicitando login e senha
 - [x] Autenticação feita contra o back-end
@@ -84,7 +75,10 @@ Este projeto foi desenvolvido com as seguintes Ferramentas:
 - [x] Tela para consulta, edição e exclusão de países
 - [x] Permitir editar/incluir/excluir apenas ao administrador
 - [x] validação nos campos
-- [-] Refrhesh token
+
+## Requisitos Não Alcançados
+
+- [x] Refresh token
 
 ## 🚀 Como rodar este projeto
 
