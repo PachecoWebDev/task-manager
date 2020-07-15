@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { FiEdit, FiXCircle } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { FiXCircle } from 'react-icons/fi';
 import Header from '../../components/Header';
 import api from '../../services/api';
 
@@ -36,7 +35,7 @@ const Dashboard: React.FC = () => {
     loadCountries();
   }, [token, logOut]);
 
-  const handleDeleCountrie = useCallback(
+  const handleDeleteCountry = useCallback(
     async id => {
       const paisIndex = paises.findIndex(pais => pais.id === id);
 
@@ -67,7 +66,6 @@ const Dashboard: React.FC = () => {
                 <th>Nome</th>
                 <th>Sigla</th>
                 <th>Gentílico</th>
-                {administrador && <th>Editar</th>}
                 {administrador && <th>Excluir</th>}
               </tr>
             </thead>
@@ -80,16 +78,9 @@ const Dashboard: React.FC = () => {
                   <td>{pais.gentilico}</td>
                   {administrador && (
                     <td>
-                      <Link to={{ pathname: `/edit-countrie/${pais.nome}` }}>
-                        <FiEdit />
-                      </Link>
-                    </td>
-                  )}
-                  {administrador && (
-                    <td>
                       <button
                         type="button"
-                        onClick={() => handleDeleCountrie(pais.id)}
+                        onClick={() => handleDeleteCountry(pais.id)}
                       >
                         <FiXCircle />
                       </button>

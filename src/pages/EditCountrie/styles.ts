@@ -16,6 +16,10 @@ export const Container = styled.div`
     width: 400px;
     text-align: center;
 
+    button {
+      margin-bottom: 20px;
+    }
+
     a {
       color: #f4ede8;
       display: block;
@@ -34,4 +38,24 @@ export const Title = styled.h1`
   font-size: 48px;
   color: #f27a54;
   padding: 40px 0;
+`;
+
+export const Select = styled.select`
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px;
+  width: 100%;
+  height: 56px;
+
+  border-left: 4px solid #fff;
+  border-right: 4px solid #fff;
+  color: #747d88;
+
+  option {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    width: 100%;
+    height: 36px;
+  }
 `;

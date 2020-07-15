@@ -7,14 +7,15 @@ import { useHistory } from 'react-router-dom';
 
 import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
+
 import getValidationErrors from '../../utils/getValidationErrors';
+
+import { Container, Content, AnimationContainer } from './styles';
 
 import LogoImg from '../../assets/world.svg';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-
-import { Container, Content } from './styles';
 
 interface LogInFormData {
   login: string;
@@ -23,6 +24,7 @@ interface LogInFormData {
 
 const LogIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+
   const { logIn } = useAuth();
   const { addToast } = useToast();
   const history = useHistory();
@@ -46,10 +48,11 @@ const LogIn: React.FC = () => {
           senha: data.senha,
         });
 
-        history.push('/dashboard');
-      } catch (err) {
-        if (err instanceof Yup.ValidationError) {
-          const errors = getValidationErrors(err);
+        history.push('dashboard');
+      } catch (error) {
+        console.log('entrou');
+        if (error instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(error);
 
           formRef.current?.setErrors(errors);
 
@@ -69,24 +72,31 @@ const LogIn: React.FC = () => {
   return (
     <Container>
       <Content>
-        <img src={LogoImg} alt="Países" />
+        <AnimationContainer>
+          <img src={LogoImg} alt="Países" />
 
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <h1>Faça seu login</h1>
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <h1>Faça seu login</h1>
 
-          <Input name="login" placeholder="Usuário" icon={FiUser} />
+            <Input
+              type="Text"
+              name="login"
+              icon={FiUser}
+              placeholder="Usuário"
+            />
 
-          <Input
-            name="senha"
-            type="password"
-            placeholder="Senha"
-            icon={FiLock}
-          />
+            <Input
+              type="password"
+              name="senha"
+              icon={FiLock}
+              placeholder="Senha"
+            />
 
-          <Button type="submit">Entrar</Button>
+            <Button type="submit">Entrar</Button>
 
-          <a href="forgot">Esqueci minha senha</a>
-        </Form>
+            <a href="forgot">Esqueci minha senha</a>
+          </Form>
+        </AnimationContainer>
       </Content>
     </Container>
   );
