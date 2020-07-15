@@ -13,7 +13,6 @@ const Header: React.FC = () => {
 
   const handleLogOut = useCallback(() => {
     logOut();
-    console.log('logout');
   }, [logOut]);
 
   return (

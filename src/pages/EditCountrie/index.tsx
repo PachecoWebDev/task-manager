@@ -158,20 +158,13 @@ const EditCountrie: React.FC = () => {
 
         {selectedCountry.map(country => (
           <Form ref={formRef} onSubmit={handleSubmit} key={country.id}>
-            <Input type="text" name="nome" defaultValue={country.nome} />
+            <Input name="id" value={country.id} disabled />
 
-            <Input
-              type="text"
-              name="sigla"
-              defaultValue={country.sigla}
-              maxLength={2}
-            />
+            <Input name="nome" defaultValue={country.nome} />
 
-            <Input
-              type="text"
-              name="gentilico"
-              defaultValue={country.gentilico}
-            />
+            <Input name="sigla" defaultValue={country.sigla} maxLength={2} />
+
+            <Input name="gentilico" defaultValue={country.gentilico} />
 
             <Button type="submit">Salvar</Button>
 
@@ -182,8 +175,6 @@ const EditCountrie: React.FC = () => {
               Excluir
             </Button>
             <Link to="/dashboard">Cancelar</Link>
-
-            <Input type="hidden" name="id" value={country.id} />
           </Form>
         ))}
       </Container>

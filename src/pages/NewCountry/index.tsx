@@ -63,11 +63,11 @@ const NewCountry: React.FC = () => {
       <Container>
         <Title>Novo País</Title>
         <Form ref={formRef} onSubmit={handleSubmit}>
-          <Input type="Text" name="nome" placeholder="Nome do País" />
+          <Input name="nome" placeholder="Nome do País" />
 
-          <Input type="Text" name="sigla" placeholder="Sigla" maxLength={2} />
+          <Input name="sigla" placeholder="Sigla" maxLength={2} />
 
-          <Input type="Text" name="gentilico" placeholder="Gentílico" />
+          <Input name="gentilico" placeholder="Gentílico" />
 
           <Button type="submit">Salvar</Button>
 

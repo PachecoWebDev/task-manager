@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { FiXCircle } from 'react-icons/fi';
+import React, { useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import api from '../../services/api';
 
@@ -15,7 +14,7 @@ interface Pais {
 }
 
 const Dashboard: React.FC = () => {
-  const { administrador, logOut } = useAuth();
+  const { logOut } = useAuth();
   const [paises, setPaises] = useState<Pais[]>([]);
   const token = localStorage.getItem('@CadastroDePaises:token');
 
@@ -35,23 +34,6 @@ const Dashboard: React.FC = () => {
     loadCountries();
   }, [token, logOut]);
 
-  const handleDeleteCountry = useCallback(
-    async id => {
-      const paisIndex = paises.findIndex(pais => pais.id === id);
-
-      await api.get('pais/excluir', {
-        params: {
-          id,
-          token,
-        },
-      });
-
-      paises.splice(paisIndex, 1);
-
-      setPaises([...paises]);
-    },
-    [token, paises],
-  );
   return (
     <>
       <Header />
@@ -66,7 +48,6 @@ const Dashboard: React.FC = () => {
                 <th>Nome</th>
                 <th>Sigla</th>
                 <th>Gentílico</th>
-                {administrador && <th>Excluir</th>}
               </tr>
             </thead>
             <tbody>
@@ -76,16 +57,6 @@ const Dashboard: React.FC = () => {
                   <td>{pais.nome}</td>
                   <td>{pais.sigla}</td>
                   <td>{pais.gentilico}</td>
-                  {administrador && (
-                    <td>
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteCountry(pais.id)}
-                      >
-                        <FiXCircle />
-                      </button>
-                    </td>
-                  )}
                 </tr>
               ))}
             </tbody>

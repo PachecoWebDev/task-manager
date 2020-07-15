@@ -35,8 +35,8 @@ const LogIn: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          login: Yup.string().required('Preencha com seu usuário'),
-          senha: Yup.string().required('Preencha com sua senha'),
+          login: Yup.string().required('Usuário obrigatório'),
+          senha: Yup.string().required('Senha obrigatória'),
         });
 
         await schema.validate(data, {
@@ -49,13 +49,10 @@ const LogIn: React.FC = () => {
         });
 
         history.push('dashboard');
-      } catch (error) {
-        console.log('entrou');
-        if (error instanceof Yup.ValidationError) {
-          const errors = getValidationErrors(error);
-
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
           formRef.current?.setErrors(errors);
-
           return;
         }
 
@@ -78,12 +75,7 @@ const LogIn: React.FC = () => {
           <Form ref={formRef} onSubmit={handleSubmit}>
             <h1>Faça seu login</h1>
 
-            <Input
-              type="Text"
-              name="login"
-              icon={FiUser}
-              placeholder="Usuário"
-            />
+            <Input name="login" icon={FiUser} placeholder="Usuário" />
 
             <Input
               type="password"
