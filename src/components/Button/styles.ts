@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
 export const Container = styled.button`
-  background: linear-gradient(90deg, #f27a54 0%, #a154f2 100%);
+  background: linear-gradient(90deg, #ffab28 0%, #d59229 100%);
   color: #fff;
   font-weight: 500;
+  font-size: 24px;
   height: 56px;
   border-radius: 10px;
   border: 0;
