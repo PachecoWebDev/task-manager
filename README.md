@@ -1,10 +1,13 @@
 <h1 align="center">
-    <img alt="NextLevelWeek" title="#NextLevelWeek" src=".github/banner.jpeg"/>
+    <img alt="Your Tasks" title="Your Tasks" src=".github/tasks.svg"/>
 </h1>
 
 <h4 align="center">
-	Cadastro de Países
+	Your Tasks
 </h4>
+<p align="center">
+  Your favorite task manager
+</p>
 <p align="center">
 
 
@@ -17,42 +20,19 @@
 
 ## Projeto
 
-Este teste é composto pela construção de uma SPA simples, composta por uma tela de cadastro de países. 
+Este teste é composto pela construção de um sistema para gerenciamento de tarefas
 
-## Tecnologia
+## Tecnologias obrigatórias
 
-O teste pode ser desenvolvido em qualquer tecnologia, desde que atenda os requisitos especificados neste teste.
+- [x] React
+- [x] Redux
+- [x] Redux persist
+
+## Home Page
 
 ## Login
 
-<h4 align="center">
-  <img alt="ExampleWeb" title="ExampleWeb" src=".github/login.jpeg" width="500px" />
-</h4>
-
-
-### Painel Administrador
-
-<h4 align="center">
-  <img alt="ExampleWeb" title="ExampleWeb" src=".github/banner.jpeg" width="500px" />
-</h4>
-
-<h4 align="center">
-  <img alt="ExampleWeb" title="ExampleWeb" src=".github/novo.jpeg" width="500px" />
-</h4>
-
-<h4 align="center">
-  <img alt="ExampleWeb" title="ExampleWeb" src=".github/editar.jpeg" width="500px" />
-</h4>
-
-<h4 align="center">
-  <img alt="ExampleWeb" title="ExampleWeb" src=".github/editar-pais.jpeg" width="500px" />
-</h4>
-
-## Painel Convidado
-
-<h4 align="center">
-  <img alt="ExampleWeb" title="ExampleWeb" src=".github/painel-convidado.jpeg" width="500px" />
-</h4>
+### Dashboard
 
 
 ## :hammer: Tecnologias
@@ -61,45 +41,48 @@ Este projeto foi desenvolvido com as seguintes Ferramentas:
 
 - [TypeScript][typescript]
 - [React][reactjs]
+- [Redux][redux]
+- [Redux Saga][reduxsaga]
 - [Styled Components][sc]
 - [Yup][yup]
 - [VS Code][vs]
 
-## Requisitos Alcançados
+## Requisitos
 
-- [x] Tela de login, solicitando login e senha
-- [x] Autenticação feita contra o back-end
-- [x] Salvar o token e o tipo do usuário no storage local da aplicação
-- [x] Tela pricipal com um menu superior simples
-- [x] Apresentar o nome do usuário na parte superior da tela
-- [x] Tela para consulta, edição e exclusão de países
-- [x] Permitir editar/incluir/excluir apenas ao administrador
-- [x] validação nos campos
+### Home page igual a página do github
 
-## Requisitos Não Alcançados
+- [ ] navbar com botão de entrar ou nome do usuário se estiver logado;
+- [ ] form de cadastro por cima do banner com fundo branco;
+- [ ] form de cadastro deve possuir os campos (nome, email, data de nascimento, cpf, cep, end-reço, numero, senha);
+- [ ] os campos nome, email, data de nascimento e senha são obrigatórios os outros são opc-onais;
+- [ ] apenas usuários maiores de 12 anos podem se cadastrar;
+- [ ] deve existir validação de CPF;
+- [ ] o CEP deve ser validado e possuir autocomplete de endereço;
 
-- [x] Refresh token
+### Após logar no sistema
+
+- [ ] deve exibir uma listagem de tarefas cadastradas;
+- [ ] deve possuir um botão para cadastro de novas tarefas;
+- [ ] cada registro da listagem deve possuir as ações (editar, excluir, visualizar, concluir)
+- [ ] a ação de concluir deve ser apenas para tarefas em aberto (não finalizadas), deve solicitar confirmação para concluir uma
+tarefa;
+- [ ] o cadastro de tarefa deve possuir os campos (nome, data de entrega, data de conclusão);
+- [ ] os campos nome e data de entrega são obrigatórios;
+- [ ] cada usuário logado deve visualizar apenas as suas tarefas;
+- [ ] Todos os dados devem ser persistidos no storage do browser;
 
 ## 🚀 Como rodar este projeto
 
 Para clonar e executar este aplicativo, você precisará de [Git](https://git-scm.com), [Node.js][nodejs] Instalado em seu computador.
 
-
-💡 Para conseguir fazer o login é necessário que o Back End esteja sendo executado.
-
-## Backend
-
-- [Backend][backend]
-
-
 ### :cyclone: Clonando o repositório
 
 ```bash
 # Clone este repositório
-$ git clone https://github.com/PachecoWebDev/cadastro-de-paises
+$ git clone https://github.com/PachecoWebDev/task-manager
 
 # Acesse a pasta do projeto no terminal/cmd
-$ cd cadastro-de-paises
+$ cd task-manager
 ```
 
 ### 🧭 Rodando a aplicação web (Front End)
@@ -109,8 +92,14 @@ $ cd cadastro-de-paises
 # Instale as dependências
 $ npm install
 
+#or
+$ yarn
+
 # Execute a aplicação
 $ npm run start
+
+#or
+$ yarn start
 
 # A aplicação será aberta na porta:3000 - acesse http://localhost:3000
 ```
@@ -134,3 +123,5 @@ Att. Anderson Pacheco 👨‍💻  [Vamos conversar!](https://www.linkedin.com/i
 [backend]: https://owncloud.mngs.com.br/index.php/s/9wnUxvxe6rTavEU
 [vs]: https://code.visualstudio.com/
 [yup]: https://github.com/jquense/yup
+[redux]: https://redux.com
+[reduxsaga]: https://rduxsaga.com

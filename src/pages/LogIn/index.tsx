@@ -12,7 +12,7 @@ import getValidationErrors from '../../utils/getValidationErrors';
 
 import { Container, Content, AnimationContainer } from './styles';
 
-import LogoImg from '../../assets/world.svg';
+import LogoImg from '../../assets/tasks.svg';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
