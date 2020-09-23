@@ -1,15 +1,15 @@
 import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { FiHome, FiPlus, FiLogOut, FiEdit } from 'react-icons/fi';
+import { FiLogOut } from 'react-icons/fi';
 
 import { useAuth } from '../../hooks/auth';
 
 import logoImg from '../../assets/tasks.svg';
 
-import { Container } from './styles';
+import { Container, HeaderList } from './styles';
 
 const Header: React.FC = () => {
-  const { nome, administrador, logOut } = useAuth();
+  const { nome, logOut } = useAuth();
 
   const handleLogOut = useCallback(() => {
     logOut();
@@ -18,13 +18,15 @@ const Header: React.FC = () => {
   return (
     <Container>
       <header>
-        <img src={logoImg} alt="World Map" />
+        <Link to="/">
+          <img src={logoImg} alt="World Map" />
+        </Link>
 
         {nome ? (
-          <ul>
+          <HeaderList>
             <li>
               <span>
-                Bem vindo <strong>{nome}</strong>
+                Bem vindo, <strong>{nome}!</strong>
               </span>
             </li>
             <li>
@@ -32,13 +34,16 @@ const Header: React.FC = () => {
                 <FiLogOut />
               </button>
             </li>
-          </ul>
+          </HeaderList>
         ) : (
-          <ul>
+          <HeaderList>
             <li>
               <Link to="/login">Sign In</Link>
             </li>
-          </ul>
+            <li className="signup">
+              <Link to="/login">Sign In</Link>
+            </li>
+          </HeaderList>
         )}
       </header>
     </Container>
