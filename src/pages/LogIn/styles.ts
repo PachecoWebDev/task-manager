@@ -5,7 +5,7 @@ export const Container = styled.div`
   height: 100vh;
 
   display: flex;
-  place-content: center;
+  flex-direction: column;
 `;
 
 export const Content = styled.div`
@@ -17,6 +17,7 @@ export const Content = styled.div`
 
   width: 100%;
   max-width: 700px;
+  margin: 0 auto;
 `;
 
 const appearFromLeft = keyframes`
@@ -39,7 +40,7 @@ export const AnimationContainer = styled.div`
   animation: ${appearFromLeft} 1s;
 
   img {
-    max-width: 300px;
+    max-width: 150px;
   }
 
   form {

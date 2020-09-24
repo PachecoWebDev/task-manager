@@ -1,6 +1,8 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, ChangeEvent, useState } from 'react';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
+import { differenceInCalendarDays } from 'date-fns';
+import { validate } from 'gerador-validador-cpf';
 
 import {
   FiLock,
@@ -14,74 +16,175 @@ import {
 
 import { FormHandles } from '@unform/core';
 
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
+import Button from '../../components/Button';
+
+import getValidationErrors from '../../utils/getValidationErrors';
 
 import logoImg from '../../assets/tasks.svg';
 
-import { Container, Content, PageTitle, FormContainer } from './styles';
-import Button from '../../components/Button';
-import getValidationErrors from '../../utils/getValidationErrors';
+import {
+  Container,
+  Content,
+  PageTitle,
+  FormContainer,
+  AnimationContainer,
+} from './styles';
+import { useToast } from '../../hooks/toast';
+
+interface SignUpFormData {
+  name: string;
+  email: string;
+  birth: string;
+  cpf: string;
+  cep: number;
+  address: string;
+  number: number;
+  password: string;
+}
+
+interface ViacepAddressResponse {
+  logradouro: string;
+}
 
 const HomePage: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const [address, setAddress] = useState('');
 
-  const handleSubmit = useCallback(async () => {
-    try {
-      formRef.current?.setErrors({});
+  const { addToast } = useToast();
+  const history = useHistory();
 
-      const schema = Yup.object().shape({
-        name: Yup.string().required(),
-        email: Yup.string().required(),
-        birth: Yup.string().required(),
-        cpf: Yup.string(),
-        cep: Yup.string(),
-        address: Yup.string(),
-        number: Yup.string(),
-        password: Yup.string().required(),
-      });
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(err);
-        formRef.current?.setErrors(errors);
+  const handleSubmit = useCallback(
+    async (data: SignUpFormData) => {
+      try {
+        formRef.current?.setErrors({});
+
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Campo obrigatório'),
+          email: Yup.string().email().required('Campo obrigatório'),
+          birth: Yup.string().test(
+            'birthValidate',
+            'Apenas maior de 12 anos podem realizar o cadastro',
+            () => {
+              const days = differenceInCalendarDays(
+                new Date(),
+                new Date(data.birth),
+              );
+              const twelveYears = 365.25 * 12;
+
+              return days > twelveYears;
+            },
+          ),
+          cpf: Yup.string()
+            .max(11)
+            .test('cpfValidation', 'CPF inválido', cpf => {
+              const validation = validate(cpf);
+
+              return validation;
+            }),
+          cep: Yup.string(),
+          address: Yup.string(),
+          number: Yup.string(),
+          password: Yup.string().required('Campo obrigatório'),
+        });
+
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+
+        addToast({
+          type: 'success',
+          title: 'Cadastro realizado',
+          description:
+            'Seu cadastro foi realizado com sucesso, agora você já pode realizar seu login',
+        });
+
+        history.push('login');
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+          formRef.current?.setErrors(errors);
+
+          return;
+        }
+
+        addToast({
+          type: 'error',
+          title: 'Erro na autenticação',
+          description: 'Ocorreu um erro ao fazer login, cheque as credenciais.',
+        });
       }
-    }
-  }, []);
+    },
+    [addToast, history],
+  );
 
+  const searchAddress = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    const cep = event.target.value.replace(/[^0-9]/, '');
+
+    if (cep.length !== 8) {
+      return false;
+    }
+
+    axios
+      .get<ViacepAddressResponse>(`https://viacep.com.br/ws/${cep}/json`)
+      .then(response => {
+        setAddress(response.data.logradouro);
+      });
+  }, []);
   return (
     <Container>
       <Header />
-      <Content>
-        <PageTitle>
-          <img src={logoImg} alt="Logo Your Tasks" />
-          <h1>YourTasks</h1>
-          <p>Your favorite task manager for everything</p>
-        </PageTitle>
+      <AnimationContainer>
+        <Content>
+          <PageTitle>
+            <img src={logoImg} alt="Logo Your Tasks" />
+            <h1>YourTasks</h1>
+            <p>Your favorite task manager for everything</p>
+          </PageTitle>
 
-        <FormContainer>
-          <Form ref={formRef} onSubmit={handleSubmit}>
-            <Input name="name" icon={FiUser} placeholder="Nome Completo" />
-            <Input name="email" icon={FiMail} placeholder="E-mail" />
-            <Input name="birth" icon={FiSun} placeholder="Data de Nascimento" />
-            <Input name="cpf" icon={FiUserCheck} placeholder="CPF" />
-            <Input name="cep" type="number" icon={FiMap} placeholder="CEP" />
-            <Input name="address" icon={FiMapPin} placeholder="Endereço" />
-            <Input
-              name="number"
-              type="number"
-              icon={FiMapPin}
-              placeholder="Número"
-            />
-            <Input
-              name="password"
-              type="password"
-              icon={FiLock}
-              placeholder="Senha"
-            />
-            <Button type="submit">Sign up for YourTasks</Button>
-          </Form>
-        </FormContainer>
-      </Content>
+          <FormContainer>
+            <Form ref={formRef} onSubmit={handleSubmit}>
+              <Input name="name" icon={FiUser} placeholder="Nome Completo" />
+              <Input name="email" icon={FiMail} placeholder="E-mail" />
+              <Input
+                name="birth"
+                type="date"
+                icon={FiSun}
+                placeholder="Data de Nascimento"
+              />
+              <Input
+                name="cpf"
+                type="number"
+                icon={FiUserCheck}
+                placeholder="CPF"
+              />
+              <Input
+                name="cep"
+                icon={FiMap}
+                placeholder="CEP"
+                onBlur={searchAddress}
+              />
+              <Input
+                name="address"
+                defaultValue={address}
+                icon={FiMapPin}
+                placeholder="Endereço"
+              />
+              <Input name="number" icon={FiMapPin} placeholder="Número" />
+              <Input
+                name="password"
+                type="password"
+                icon={FiLock}
+                placeholder="Senha"
+              />
+              <Button type="submit">Sign up for YourTasks</Button>
+            </Form>
+          </FormContainer>
+        </Content>
+      </AnimationContainer>
     </Container>
   );
 };
