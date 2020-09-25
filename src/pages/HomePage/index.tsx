@@ -1,4 +1,5 @@
 import React, { useCallback, useRef, ChangeEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { differenceInCalendarDays } from 'date-fns';
@@ -34,15 +35,16 @@ import {
   AnimationContainer,
 } from './styles';
 import { useToast } from '../../hooks/toast';
+import { signUpRequest } from '../../store/modules/auth/actions.js';
 
 interface SignUpFormData {
   name: string;
   email: string;
   birth: string;
   cpf: string;
-  cep: number;
+  cep: string;
   address: string;
-  number: number;
+  number: string;
   password: string;
 }
 
@@ -53,6 +55,8 @@ interface ViacepAddressResponse {
 const HomePage: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const [address, setAddress] = useState('');
+
+  const dispatch = useDispatch();
 
   const { addToast } = useToast();
   const history = useHistory();
@@ -95,6 +99,19 @@ const HomePage: React.FC = () => {
           abortEarly: false,
         });
 
+        dispatch(
+          signUpRequest({
+            name: data.name,
+            email: data.email,
+            birth: data.birth,
+            cpf: data.cpf,
+            cep: data.cep,
+            address: data.address,
+            number: data.number,
+            password: data.password,
+          }),
+        );
+
         addToast({
           type: 'success',
           title: 'Cadastro realizado',
@@ -114,11 +131,12 @@ const HomePage: React.FC = () => {
         addToast({
           type: 'error',
           title: 'Erro na autenticação',
-          description: 'Ocorreu um erro ao fazer login, cheque as credenciais.',
+          description:
+            'Ocorreu um erro ao realizar o cadastro, tente novamente.',
         });
       }
     },
-    [addToast, history],
+    [addToast, dispatch, history],
   );
 
   const searchAddress = useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -155,12 +173,7 @@ const HomePage: React.FC = () => {
                 icon={FiSun}
                 placeholder="Data de Nascimento"
               />
-              <Input
-                name="cpf"
-                type="number"
-                icon={FiUserCheck}
-                placeholder="CPF"
-              />
+              <Input name="cpf" icon={FiUserCheck} placeholder="CPF" />
               <Input
                 name="cep"
                 icon={FiMap}

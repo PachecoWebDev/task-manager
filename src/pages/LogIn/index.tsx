@@ -1,12 +1,13 @@
 import React, { useCallback, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { FiLock, FiMail } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { useHistory } from 'react-router-dom';
 
-import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
+import { signInRequest } from '../../store/modules/auth/actions.js';
 
 import getValidationErrors from '../../utils/getValidationErrors';
 
@@ -26,7 +27,8 @@ interface LogInFormData {
 const LogIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { logIn } = useAuth();
+  const dispatch = useDispatch();
+
   const { addToast } = useToast();
   const history = useHistory();
 
@@ -46,10 +48,12 @@ const LogIn: React.FC = () => {
           abortEarly: false,
         });
 
-        // await logIn({
-        //   login: data.login,
-        //   senha: data.senha,
-        // });
+        await dispatch(
+          signInRequest({
+            email: data.login,
+            password: data.senha,
+          }),
+        );
 
         history.push('dashboard');
       } catch (err) {
@@ -66,7 +70,7 @@ const LogIn: React.FC = () => {
         });
       }
     },
-    [addToast, history],
+    [addToast, dispatch, history],
   );
 
   return (
