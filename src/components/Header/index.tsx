@@ -41,7 +41,7 @@ const Header: React.FC = () => {
               <Link to="/login">Sign In</Link>
             </li>
             <li className="signup">
-              <Link to="/login">Sign In</Link>
+              <Link to="/">Sign Up</Link>
             </li>
           </HeaderList>
         )}

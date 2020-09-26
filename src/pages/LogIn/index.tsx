@@ -1,12 +1,13 @@
 import React, { useCallback, useRef } from 'react';
-import { FiUser, FiLock } from 'react-icons/fi';
+import { useDispatch } from 'react-redux';
+import { FiLock, FiMail } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { useHistory } from 'react-router-dom';
 
-import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
+import { signInRequest } from '../../store/modules/auth/actions.js';
 
 import getValidationErrors from '../../utils/getValidationErrors';
 
@@ -16,6 +17,7 @@ import LogoImg from '../../assets/tasks.svg';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import Header from '../../components/Header';
 
 interface LogInFormData {
   login: string;
@@ -25,7 +27,8 @@ interface LogInFormData {
 const LogIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { logIn } = useAuth();
+  const dispatch = useDispatch();
+
   const { addToast } = useToast();
   const history = useHistory();
 
@@ -35,7 +38,9 @@ const LogIn: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          login: Yup.string().required('Usuário obrigatório'),
+          login: Yup.string()
+            .email('Digite um email válido')
+            .required('Email obrigatório'),
           senha: Yup.string().required('Senha obrigatória'),
         });
 
@@ -43,10 +48,12 @@ const LogIn: React.FC = () => {
           abortEarly: false,
         });
 
-        await logIn({
-          login: data.login,
-          senha: data.senha,
-        });
+        await dispatch(
+          signInRequest({
+            email: data.login,
+            password: data.senha,
+          }),
+        );
 
         history.push('dashboard');
       } catch (err) {
@@ -63,11 +70,12 @@ const LogIn: React.FC = () => {
         });
       }
     },
-    [logIn, addToast, history],
+    [addToast, dispatch, history],
   );
 
   return (
     <Container>
+      <Header />
       <Content>
         <AnimationContainer>
           <img src={LogoImg} alt="Países" />
@@ -75,7 +83,7 @@ const LogIn: React.FC = () => {
           <Form ref={formRef} onSubmit={handleSubmit}>
             <h1>Faça seu login</h1>
 
-            <Input name="login" icon={FiUser} placeholder="Usuário" />
+            <Input name="login" icon={FiMail} placeholder="E-mail" />
 
             <Input
               type="password"
@@ -85,8 +93,6 @@ const LogIn: React.FC = () => {
             />
 
             <Button type="submit">Entrar</Button>
-
-            <a href="forgot">Esqueci minha senha</a>
           </Form>
         </AnimationContainer>
       </Content>
