@@ -1,74 +1,59 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 0;
+  --horizontalPadding: 16px;
+  --verticalPadding: 24px;
+
+  padding: var(--verticalPadding) var(--horizontalPadding);
+  overflow: hidden;
+`;
+export const Main = styled.div`
   display: flex;
-  align-items: center;
   flex-direction: column;
-  flex: 1;
+
+  margin: 0 auto;
+  max-width: 1280px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 `;
 
-export const Title = styled.h1`
-  font-size: 48px;
-  color: #f27a54;
+export const LeftSide = styled.div`
+  padding: 0 var(--horizontalPadding);
+
+  @media (min-width: 768px) {
+    width: 25%;
+  }
 `;
 
-export const TableContainer = styled.section`
-  margin-top: 64px;
+export const RightSide = styled.div`
+  padding: 0 var(--horizontalPadding);
 
-  table {
-    width: 100%;
-    th {
-      color: #f27a54;
-      font-weight: normal;
-      padding: 20px 32px;
-      font-size: 24px;
-      line-height: 24px;
-    }
+  @media (min-width: 768px) {
+    width: 75%;
+  }
+`;
 
-    td {
-      padding: 20px 32px;
-      border: 0;
-      background: #fff;
-      font-size: 16px;
-      font-weight: normal;
-      color: #969cb3;
-      text-align: center;
+export const Tasks = styled.div`
+  margin-top: var(--verticalPadding);
 
-      &.title {
-        color: #363f5f;
-      }
+  > h1 {
+    font-size: 24px;
+    font-weight: normal;
+  }
 
-      a {
-        font-size: 24px;
-        color: #f27a54;
-      }
+  > div {
+    margin-top: 8px;
 
-      button {
-        background: none;
-        border: none;
+    display: grid;
+    grid-gap: 16px;
 
-        svg {
-          font-size: 24px;
-          color: #f27a54;
-          transition: color 0.2s;
-        }
+    grid-template-columns: 1fr;
 
-        &:hover svg {
-          color: #c53030;
-        }
-      }
-    }
-
-    td:first-child {
-      border-radius: 8px 0 0 8px;
-    }
-
-    td:last-child {
-      border-radius: 0 8px 8px 0;
+    @media (min-width: 768px) {
+      grid-template-columns: 1fr 1fr;
+      grid-auto-rows: minmax(min-content, max-content);
     }
   }
 `;
