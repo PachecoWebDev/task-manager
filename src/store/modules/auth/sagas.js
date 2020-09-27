@@ -7,22 +7,15 @@ import { signInSuccess, singFailure } from './actions.js';
 export function* signIn({ payload }) {
   try {
     const { email, password } = payload;
+    const storagedUsers = JSON.parse(localStorage.getItem("@taskUsers"));
 
-    const userEmail = localStorage.getItem('@TaskUser:email');
-    const userPassword = localStorage.getItem('@TaskUser:password');
+    const logUser = storagedUsers.filter(user => user.email === email && user.password === password);
 
-    if (email !== userEmail || password !== userPassword) {
-      console.log('error');
-      return;
+    if (logUser.length > 0) {
+      yield put(signInSuccess(logUser[0]));
+
+      history.push('dashboard');
     }
-    console.log('success');
-
-    const user = 'Anderson';
-    // const user = localStorage.getItem(JSON.parse('@Tasks:user'));
-
-    yield put(signInSuccess(user));
-
-    history.push('dashboard');
   } catch (err) {
     yield put(singFailure());
   }
@@ -30,16 +23,29 @@ export function* signIn({ payload }) {
 
 export function* signUp({ payload }) {
   try {
-    const { name, email, birth, cpf, cep, address, number, password } = payload;
+    const { id, name, email, birth, cpf, cep, address, number, password } = payload;
+    const user = {
+      id,
+      name,
+      email,
+      birth,
+      cpf,
+      cep,
+      address,
+      number,
+      password,
+    };
 
-    localStorage.setItem('@TaskUser:name', name);
-    localStorage.setItem('@TaskUser:email', email);
-    localStorage.setItem('@TaskUser:birth', birth);
-    localStorage.setItem('@TaskUser:cpf', cpf);
-    localStorage.setItem('@TaskUser:cep', cep);
-    localStorage.setItem('@TaskUser:address', address);
-    localStorage.setItem('@TaskUser:number', number);
-    localStorage.setItem('@TaskUser:password', password);
+    const users = [user];
+
+    if (localStorage.hasOwnProperty("@taskUsers")) {
+      const storagedUsers = JSON.parse(localStorage.getItem("@taskUsers"));
+      storagedUsers.push(user);
+      localStorage.setItem("@taskUsers", JSON.stringify(storagedUsers));
+
+    } else {
+      localStorage.setItem("@taskUsers", JSON.stringify(users));
+    }
 
     history.push('/login');
   } catch (err) {
@@ -47,7 +53,12 @@ export function* signUp({ payload }) {
   }
 }
 
+export function signOut() {
+  history.push('/');
+}
+
 export default all([
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
-  takeLatest('@auth/SIGN_UP_REQUEST', signUp)
+  takeLatest('@auth/SIGN_UP_REQUEST', signUp),
+  takeLatest('@auth/SIGN_OUT', signOut),
 ]);

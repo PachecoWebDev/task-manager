@@ -1,13 +1,15 @@
 import React, { useCallback } from 'react';
-import { FiCheckSquare, FiEdit, FiEye, FiXSquare } from 'react-icons/fi';
 
 import {
   Container,
   TopTask,
-  CheckIcon,
   ContentTask,
   BottomTask,
   DateIcon,
+  CheckIcon,
+  EditIcon,
+  EyeIcon,
+  SquareIcon,
 } from './styles';
 
 interface TaskItem {
@@ -67,7 +69,8 @@ const TaskItem: React.FC<Props> = ({
 
       <BottomTask>
         <button type="button" className="icon" onClick={() => setEditingTask()}>
-          <FiEdit size={20} />
+          <EditIcon />
+          Editar
         </button>
 
         <button
@@ -75,23 +78,25 @@ const TaskItem: React.FC<Props> = ({
           className="icon"
           onClick={() => handleDeleteTask(task.id)}
         >
-          <FiXSquare size={20} />
+          <SquareIcon />
+          Excluir
         </button>
 
-        <button
+        {/* <button
           type="button"
           className="icon"
           onClick={() => handleViewTask(task.id)}
         >
-          <FiEye size={20} />
-        </button>
+          <EyeIcon />
+        </button> */}
 
         <button
           type="button"
           className="icon"
           onClick={() => handleFinishTask(task.id)}
         >
-          <FiCheckSquare size={20} />
+          <SquareIcon />
+          Conluir
         </button>
       </BottomTask>
     </Container>

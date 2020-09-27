@@ -17,7 +17,7 @@ interface TaskItem {
 interface IModalProps {
   isOpen: boolean;
   setIsOpen: () => void;
-  handleUpdateTask: (task: Omit<TaskItem, 'id'>) => void;
+  handleUpdateTask: (task: TaskItem) => void;
   editingTask: TaskItem;
 }
 

@@ -1,5 +1,11 @@
 import styled, { css } from 'styled-components';
-import { FiCalendar, FiCheckSquare } from 'react-icons/fi';
+import {
+  FiCalendar,
+  FiCheckSquare,
+  FiEdit,
+  FiEye,
+  FiXSquare,
+} from 'react-icons/fi';
 
 const iconCSS = css`
   width: 16px;
@@ -8,6 +14,25 @@ const iconCSS = css`
   flex-shrink: 0;
 `;
 
+export const DateIcon = styled(FiCalendar)`
+  ${iconCSS}
+`;
+
+export const CheckIcon = styled(FiCheckSquare)`
+  ${iconCSS}
+`;
+
+export const EditIcon = styled(FiEdit)`
+  ${iconCSS}
+`;
+
+export const EyeIcon = styled(FiEye)`
+  ${iconCSS}
+`;
+
+export const SquareIcon = styled(FiXSquare)`
+  ${iconCSS}
+`;
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -24,21 +49,19 @@ export const TopTask = styled.div`
 
     > h1 {
       margin-left: 8px;
-      font-size: 16px;
+      font-size: 24px;
       font-weight: 600;
       color: #ededed;
     }
   }
 `;
 
-export const CheckIcon = styled(FiCheckSquare)`
-  ${iconCSS}
-`;
-
 export const ContentTask = styled.div`
+  padding: 8px 0 16px;
+
   > p {
     margin: 8px 0 16px;
-    font-size: 14px;
+    font-size: 16px;
     color: #c3c3c3;
     letter-spacing: 0.1px;
   }
@@ -55,7 +78,7 @@ export const ContentTask = styled.div`
       > span,
       p {
         margin-left: 5px;
-        font-size: 12px;
+        font-size: 14px;
         color: #ededed;
       }
     }
@@ -66,8 +89,28 @@ export const BottomTask = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
 
-export const DateIcon = styled(FiCalendar)`
-  ${iconCSS}
+  > button {
+    background: transparent;
+    padding: 8px;
+    color: #ededed;
+    border: 1px solid #ededed;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    transition: 0.2s;
+
+    &:hover {
+      color: #30363d;
+      background: #ededed;
+
+      > svg {
+        color: #30363d;
+      }
+    }
+
+    > svg {
+      margin-right: 8px;
+    }
+  }
 `;

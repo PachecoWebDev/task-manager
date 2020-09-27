@@ -5,10 +5,10 @@ export function signInRequest({ email, password }) {
   };
 }
 
-export function signUpRequest({ name, email, birth, cpf, cep, address, number, password }) {
+export function signUpRequest({ id, name, email, birth, cpf, cep, address, number, password }) {
   return {
     type: '@auth/SIGN_UP_REQUEST',
-    payload: { name, email, birth, cpf, cep, address, number, password },
+    payload: { id, name, email, birth, cpf, cep, address, number, password },
   };
 }
 
@@ -22,5 +22,11 @@ export function signInSuccess(user) {
 export function singFailure() {
   return {
     type: '@uth/SIGN_FAILURE',
+  };
+}
+
+export function signOut() {
+  return {
+    type: '@auth/SIGN_OUT',
   };
 }

@@ -9,7 +9,7 @@ import TaskItem from '../../components/TaskItem';
 
 import { Container, Main, LeftSide, RightSide, Tasks } from './styles';
 
-interface TaskItem {
+interface TaskItemData {
   id: string;
   title: string;
   description?: string;
@@ -18,23 +18,27 @@ interface TaskItem {
 }
 
 const Dashboard: React.FC = () => {
-  const [tasks, setTasks] = useState<TaskItem[]>([]);
-  const [editingTask, setEditingTask] = useState<TaskItem>({} as TaskItem);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [tasks, setTasks] = useState<TaskItemData[]>([]);
+  const [editingTask, setEditingTask] = useState<TaskItemData>(
+    {} as TaskItemData,
+  );
+  const [modalOpen, setModalOpen] = useState(true);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   useEffect(() => {
     async function loadTasks(): Promise<void> {
       const response = localStorage.getItem('@Tasks');
 
-      setTasks(response.data);
+      if (response) {
+        setTasks(JSON.parse(response));
+      }
     }
 
     loadTasks();
   }, []);
 
   const handleAddTask = useCallback(
-    (task: Omit<TaskItem, 'id'>): void => {
+    (task: Omit<TaskItemData, 'id'>): void => {
       try {
         const id = uuid();
         const newTask = {
@@ -56,7 +60,7 @@ const Dashboard: React.FC = () => {
   );
 
   const handleUpdateTask = useCallback(
-    (task: TaskItem): void => {
+    (task: TaskItemData): void => {
       try {
         localStorage.removeItem(`@Task:${task.id}`);
         localStorage.setItem(`@Task:${task.id}`, JSON.stringify(task));
