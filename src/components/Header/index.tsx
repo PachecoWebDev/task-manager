@@ -1,44 +1,53 @@
 import React, { useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import { FiHome, FiPlus, FiLogOut, FiEdit } from 'react-icons/fi';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import { FiLogOut } from 'react-icons/fi';
 
-import { useAuth } from '../../hooks/auth';
+import { signOut } from '../../store/modules/auth/actions.js';
 
 import logoImg from '../../assets/tasks.svg';
 
-import { Container } from './styles';
+import { Container, HeaderList } from './styles';
 
 const Header: React.FC = () => {
-  const { nome, administrador, logOut } = useAuth();
+  const dispatch = useDispatch();
+  const profile = useSelector((state: any) => state.user.profile);
+  const history = useHistory();
 
   const handleLogOut = useCallback(() => {
-    logOut();
-  }, [logOut]);
+    dispatch(signOut());
+    history.push('/');
+  }, [dispatch, history]);
 
   return (
     <Container>
       <header>
-        <img src={logoImg} alt="World Map" />
+        <Link to="/">
+          <img src={logoImg} alt="Task Manager" />
+        </Link>
 
-        {nome ? (
-          <ul>
+        {profile ? (
+          <HeaderList>
             <li>
               <span>
-                Bem vindo <strong>{nome}</strong>
+                Bem vindo, <strong>{profile.name}!</strong>
               </span>
             </li>
             <li>
-              <button type="button" onClick={() => handleLogOut()}>
+              <button type="button" onClick={handleLogOut}>
                 <FiLogOut />
               </button>
             </li>
-          </ul>
+          </HeaderList>
         ) : (
-          <ul>
+          <HeaderList>
             <li>
               <Link to="/login">Sign In</Link>
             </li>
-          </ul>
+            <li className="signup">
+              <Link to="/">Sign Up</Link>
+            </li>
+          </HeaderList>
         )}
       </header>
     </Container>

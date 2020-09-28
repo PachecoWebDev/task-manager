@@ -1,6 +1,6 @@
-<h1 align="center">
+<div align="center">
     <img alt="Your Tasks" title="Your Tasks" src=".github/tasks.svg"/>
-</h1>
+</div>
 
 <h4 align="center">
 	Your Tasks
@@ -22,20 +22,7 @@
 
 Este teste é composto pela construção de um sistema para gerenciamento de tarefas
 
-## Tecnologias obrigatórias
-
-- [x] React
-- [x] Redux
-- [x] Redux persist
-
-## Home Page
-
-## Login
-
-### Dashboard
-
-
-## :hammer: Tecnologias
+## :hammer: Tecnologias Empregadas
 
 Este projeto foi desenvolvido com as seguintes Ferramentas:
 
@@ -47,29 +34,65 @@ Este projeto foi desenvolvido com as seguintes Ferramentas:
 - [Yup][yup]
 - [VS Code][vs]
 
+## Home Page
+<div align="center">
+    <img alt="Your Tasks" title="Your Tasks" src=".github/signup.jpeg"/>
+</div>
+
+## Login
+<div align="center">
+    <img alt="Your Tasks" title="Your Tasks" src=".github/signin.jpeg"/>
+</div>
+
+### Dashboard
+<div align="center">
+    <img alt="Your Tasks" title="Your Tasks" src=".github/dashboard.jpeg"/>
+</div>
+
+## Nova Tarefa
+<div align="center">
+    <img alt="Your Tasks" title="Your Tasks" src=".github/newTask.jpeg"/>
+</div>
+
+## Concluir Tarefa
+<div align="center">
+    <img alt="Your Tasks" title="Your Tasks" src=".github/checkTask.jpeg"/>
+</div>
+
 ## Requisitos
+
+## Tecnologias obrigatórias
+
+- [x] React
+- [x] Redux
+- [x] Redux persist
 
 ### Home page igual a página do github
 
-- [ ] navbar com botão de entrar ou nome do usuário se estiver logado;
-- [ ] form de cadastro por cima do banner com fundo branco;
-- [ ] form de cadastro deve possuir os campos (nome, email, data de nascimento, cpf, cep, end-reço, numero, senha);
-- [ ] os campos nome, email, data de nascimento e senha são obrigatórios os outros são opc-onais;
-- [ ] apenas usuários maiores de 12 anos podem se cadastrar;
-- [ ] deve existir validação de CPF;
-- [ ] o CEP deve ser validado e possuir autocomplete de endereço;
+- [x] navbar com botão de entrar ou nome do usuário se estiver logado;
+- [x] form de cadastro por cima do banner com fundo branco;
+- [x] form de cadastro deve possuir os campos (nome, email, data de nascimento, cpf, cep, end-reço, numero, senha);
+- [x] os campos nome, email, data de nascimento e senha são obrigatórios os outros são opc-onais;
+- [x] apenas usuários maiores de 12 anos podem se cadastrar;
+- [x] deve existir validação de CPF;
+- [x] o CEP deve ser validado e possuir autocomplete de endereço;
 
 ### Após logar no sistema
 
-- [ ] deve exibir uma listagem de tarefas cadastradas;
-- [ ] deve possuir um botão para cadastro de novas tarefas;
-- [ ] cada registro da listagem deve possuir as ações (editar, excluir, visualizar, concluir)
-- [ ] a ação de concluir deve ser apenas para tarefas em aberto (não finalizadas), deve solicitar confirmação para concluir uma
+- [x] deve exibir uma listagem de tarefas cadastradas;
+- [x] deve possuir um botão para cadastro de novas tarefas;
+- [x] cada registro da listagem deve possuir as ações (editar, excluir, visualizar, concluir)
+- [x] a ação de concluir deve ser apenas para tarefas em aberto (não finalizadas), deve solicitar confirmação para concluir uma
 tarefa;
-- [ ] o cadastro de tarefa deve possuir os campos (nome, data de entrega, data de conclusão);
-- [ ] os campos nome e data de entrega são obrigatórios;
-- [ ] cada usuário logado deve visualizar apenas as suas tarefas;
-- [ ] Todos os dados devem ser persistidos no storage do browser;
+- [x] o cadastro de tarefa deve possuir os campos (nome, data de entrega, data de conclusão);
+- [x] os campos nome e data de entrega são obrigatórios;
+- [x] cada usuário logado deve visualizar apenas as suas tarefas;
+- [x] Todos os dados devem ser persistidos no storage do browser;
+
+### Extras
+
+- [x] React Hooks
+- [ ] Testes unitários dos componentes
 
 ## 🚀 Como rodar este projeto
 
@@ -123,5 +146,5 @@ Att. Anderson Pacheco 👨‍💻  [Vamos conversar!](https://www.linkedin.com/i
 [backend]: https://owncloud.mngs.com.br/index.php/s/9wnUxvxe6rTavEU
 [vs]: https://code.visualstudio.com/
 [yup]: https://github.com/jquense/yup
-[redux]: https://redux.com
-[reduxsaga]: https://rduxsaga.com
+[redux]: https://redux.js.org/
+[reduxsaga]: https://redux-saga.js.org/
