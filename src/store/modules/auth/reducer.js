@@ -19,7 +19,7 @@ export default function auth(state = INITIAL_STATE, action) {
         break;
       }
 
-      case '@auth/SIGN_IN_FAILURE': {
+      case '@auth/SIGN_FAILURE': {
         draft.loading = false;
         break;
       }
@@ -30,7 +30,7 @@ export default function auth(state = INITIAL_STATE, action) {
       }
 
       default:
-        return state;
+
     }
   });
 }

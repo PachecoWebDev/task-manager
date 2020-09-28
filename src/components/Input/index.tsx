@@ -14,12 +14,14 @@ import { Container, Error } from './styles';
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   icon?: React.ComponentType<IconBaseProps>;
+  hidden?: boolean;
 }
 
-const Input: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
+const Input: React.FC<InputProps> = ({ name, icon: Icon, hidden, ...rest }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const { fieldName, defaultValue, error, registerField } = useField(name);
 
   const handleInputBlur = useCallback(() => {
@@ -38,10 +40,19 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
       ref: inputRef.current,
       path: 'value',
     });
-  }, [fieldName, registerField]);
+
+    if (hidden) {
+      setIsHidden(hidden);
+    }
+  }, [fieldName, registerField, hidden]);
 
   return (
-    <Container isErrored={!!error} isFocused={isFocused} isFilled={isFilled}>
+    <Container
+      isErrored={!!error}
+      isFocused={isFocused}
+      isFilled={isFilled}
+      isHidden={isHidden}
+    >
       {Icon && <Icon size={20} />}
       <input
         onFocus={handleInputFocus}

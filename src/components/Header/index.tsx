@@ -31,11 +31,11 @@ const Header: React.FC = () => {
                 Bem vindo, <strong>{profile.name}!</strong>
               </span>
             </li>
-            <li>
-              <button type="button" onClick={() => handleLogOut()}>
+            {/* <li>
+              <button type="button" onClick={handleLogOut}>
                 <FiLogOut />
               </button>
-            </li>
+            </li> */}
           </HeaderList>
         ) : (
           <HeaderList>

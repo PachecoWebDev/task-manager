@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import {
   FiCalendar,
   FiCheckSquare,
+  FiSquare,
   FiEdit,
   FiEye,
   FiXSquare,
@@ -30,9 +31,14 @@ export const EyeIcon = styled(FiEye)`
   ${iconCSS}
 `;
 
-export const SquareIcon = styled(FiXSquare)`
+export const XSquareIcon = styled(FiXSquare)`
   ${iconCSS}
 `;
+
+export const SquareIcon = styled(FiSquare)`
+  ${iconCSS}
+`;
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -90,7 +96,7 @@ export const BottomTask = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  > button {
+  button {
     background: transparent;
     padding: 8px;
     color: #ededed;

@@ -1,22 +1,23 @@
 import { all, takeLatest, put } from 'redux-saga/effects';
+import { toast } from 'react-toastify';
 
 import history from '../../../utils/history';
 
 import { signInSuccess, singFailure } from './actions.js';
 
 export function* signIn({ payload }) {
+  const { email, password } = payload;
+  const storagedUsers = JSON.parse(localStorage.getItem("@taskUsers"));
+
+  const logUser = storagedUsers.filter(user => user.email === email && user.password === password);
   try {
-    const { email, password } = payload;
-    const storagedUsers = JSON.parse(localStorage.getItem("@taskUsers"));
-
-    const logUser = storagedUsers.filter(user => user.email === email && user.password === password);
-
     if (logUser.length > 0) {
       yield put(signInSuccess(logUser[0]));
 
       history.push('dashboard');
     }
   } catch (err) {
+    toast.error('Falha na autenticação, verifique seus dados');
     yield put(singFailure());
   }
 }
@@ -54,7 +55,8 @@ export function* signUp({ payload }) {
 }
 
 export function signOut() {
-  history.push('/');
+  console.log('sair');
+  history.push('/login');
 }
 
 export default all([

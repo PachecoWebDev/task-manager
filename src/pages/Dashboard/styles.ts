@@ -7,6 +7,7 @@ export const Container = styled.div`
   padding: var(--verticalPadding) var(--horizontalPadding);
   overflow: hidden;
 `;
+
 export const Main = styled.div`
   display: flex;
   flex-direction: column;
@@ -38,9 +39,45 @@ export const RightSide = styled.div`
 export const Tasks = styled.div`
   margin-top: var(--verticalPadding);
 
-  > h1 {
-    font-size: 24px;
-    font-weight: normal;
+  > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px 0;
+
+    > h1 {
+      font-size: 32px;
+      font-weight: normal;
+
+      > span {
+        font-weight: 900;
+        color: #f3ab2a;
+      }
+    }
+
+    > button {
+      font-weight: 600;
+      border-radius: 8px;
+      border: 0;
+      background: #d5922a;
+      color: #fff;
+
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .text {
+        padding: 16px 24px;
+      }
+
+      .icon {
+        display: flex;
+        padding: 16px 16px;
+        background: #f3ab2a;
+        border-radius: 0 8px 8px 0;
+        margin: 0 auto;
+      }
+    }
   }
 
   > div {

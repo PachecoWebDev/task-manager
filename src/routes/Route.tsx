@@ -18,7 +18,6 @@ const Route: React.FC<ReactProps> = ({
   ...rest
 }) => {
   const { signed } = store.getState().auth;
-  // const signed = true;
 
   return (
     <ReactDOMRoute

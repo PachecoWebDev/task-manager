@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import ModalFinishTask from '../ModalFinishTask';
 
 import {
   Container,
@@ -8,7 +9,7 @@ import {
   DateIcon,
   CheckIcon,
   EditIcon,
-  EyeIcon,
+  XSquareIcon,
   SquareIcon,
 } from './styles';
 
@@ -18,32 +19,44 @@ interface TaskItem {
   description?: string;
   deliveryDate: string;
   completionDate?: string;
+  isOpen: boolean;
 }
 
 interface Props {
   task: TaskItem;
   handleEditTask: (task: TaskItem) => void;
+  handleFinishTask: (task: TaskItem) => void;
   handleDeleteTask: (id: string) => void;
 }
 
 const TaskItem: React.FC<Props> = ({
   task,
   handleEditTask,
+  handleFinishTask,
   handleDeleteTask,
 }) => {
-  const handleViewTask = useCallback(id => {}, []);
-
-  const handleFinishTask = useCallback(id => {}, []);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const setEditingTask = useCallback(() => {
     handleEditTask(task);
   }, [handleEditTask, task]);
 
+  const toggleModal = useCallback(() => {
+    setModalOpen(!modalOpen);
+  }, [modalOpen]);
+
   return (
     <Container>
+      <ModalFinishTask
+        task={task}
+        isOpen={modalOpen}
+        setIsOpen={toggleModal}
+        handleFinishTask={handleFinishTask}
+      />
       <TopTask>
         <header>
-          <CheckIcon />
+          {task.isOpen ? <SquareIcon /> : <CheckIcon />}
+
           <h1>{task.title}</h1>
         </header>
       </TopTask>
@@ -68,35 +81,30 @@ const TaskItem: React.FC<Props> = ({
       </ContentTask>
 
       <BottomTask>
-        <button type="button" className="icon" onClick={() => setEditingTask()}>
-          <EditIcon />
-          Editar
-        </button>
+        {task.isOpen && (
+          <>
+            <button
+              type="button"
+              className="icon"
+              onClick={() => setEditingTask()}
+            >
+              <EditIcon />
+              Editar
+            </button>
+            <button type="button" className="icon" onClick={toggleModal}>
+              <CheckIcon />
+              Conluir
+            </button>
+          </>
+        )}
 
         <button
           type="button"
           className="icon"
           onClick={() => handleDeleteTask(task.id)}
         >
-          <SquareIcon />
+          <XSquareIcon />
           Excluir
-        </button>
-
-        {/* <button
-          type="button"
-          className="icon"
-          onClick={() => handleViewTask(task.id)}
-        >
-          <EyeIcon />
-        </button> */}
-
-        <button
-          type="button"
-          className="icon"
-          onClick={() => handleFinishTask(task.id)}
-        >
-          <SquareIcon />
-          Conluir
         </button>
       </BottomTask>
     </Container>

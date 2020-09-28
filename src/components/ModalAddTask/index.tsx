@@ -1,10 +1,12 @@
 import React, { useRef, useCallback } from 'react';
+import * as Yup from 'yup';
 
 import { FiCheckSquare } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from './styles';
 import Modal from '../Modal';
 import Input from '../Input';
+import getValidationErrors from '../../utils/getValidationErrors';
 
 interface TaskItem {
   id: string;
@@ -12,6 +14,7 @@ interface TaskItem {
   description?: string;
   deliveryDate: string;
   completionDate?: string;
+  isOpen: boolean;
 }
 
 interface ICreateTaskData {
@@ -20,6 +23,7 @@ interface ICreateTaskData {
   description?: string;
   deliveryDate: string;
   completionDate?: string;
+  isOpen: boolean;
 }
 
 interface IModalProps {
@@ -37,8 +41,26 @@ const ModalAddTask: React.FC<IModalProps> = ({
 
   const handleSubmit = useCallback(
     async (data: ICreateTaskData) => {
-      handleAddTask(data);
-      setIsOpen();
+      try {
+        const schema = Yup.object().shape({
+          title: Yup.string().required('Este campo é obrgigatório'),
+          description: Yup.string(),
+          deliveryDate: Yup.string().required('Este campo é obrgigatório'),
+          completionDate: Yup.string(),
+        });
+
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+
+        handleAddTask(data);
+        setIsOpen();
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+          formRef.current?.setErrors(errors);
+        }
+      }
     },
     [handleAddTask, setIsOpen],
   );

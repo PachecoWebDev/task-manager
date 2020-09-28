@@ -1,5 +1,11 @@
 import styled, { css } from 'styled-components';
-import { FiSun, FiCheckSquare } from 'react-icons/fi';
+import {
+  FiSun,
+  FiCheckSquare,
+  FiMap,
+  FiMapPin,
+  FiUserCheck,
+} from 'react-icons/fi';
 
 const iconsCSS = css`
   width: 16px;
@@ -47,7 +53,7 @@ export const Avatar = styled.img`
   border-radius: 50%;
 
   @media (min-width: 768px) {
-    width: 100%;
+    width: 75%;
     margin-top: 36px;
   }
 `;
@@ -78,5 +84,17 @@ export const BirthIcon = styled(FiSun)`
 `;
 
 export const TaskIcon = styled(FiCheckSquare)`
+  ${iconsCSS}
+`;
+
+export const CepIcon = styled(FiMap)`
+  ${iconsCSS}
+`;
+
+export const AddressIcon = styled(FiMapPin)`
+  ${iconsCSS}
+`;
+
+export const CpfIcon = styled(FiUserCheck)`
   ${iconsCSS}
 `;

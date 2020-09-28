@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { uuid } from 'uuidv4';
+import { FiCheckSquare } from 'react-icons/fi';
+import { useSelector } from 'react-redux';
 
 import Header from '../../components/Header';
 import ProfileData from '../../components/ProfileData';
@@ -9,33 +11,41 @@ import TaskItem from '../../components/TaskItem';
 
 import { Container, Main, LeftSide, RightSide, Tasks } from './styles';
 
+import logoImg from '../../assets/tasks.svg';
+
 interface TaskItemData {
   id: string;
   title: string;
   description?: string;
   deliveryDate: string;
   completionDate?: string;
+  isOpen: boolean;
 }
 
 const Dashboard: React.FC = () => {
   const [tasks, setTasks] = useState<TaskItemData[]>([]);
+  const [taskQuantity, setTaskQuantity] = useState(0);
   const [editingTask, setEditingTask] = useState<TaskItemData>(
     {} as TaskItemData,
   );
-  const [modalOpen, setModalOpen] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const profile = useSelector((state: any) => state.user.profile);
 
   useEffect(() => {
     async function loadTasks(): Promise<void> {
-      const response = localStorage.getItem('@Tasks');
+      const response = localStorage.getItem(`@UserTasks:${profile.id}`);
 
       if (response) {
-        setTasks(JSON.parse(response));
+        const parsedResponse = JSON.parse(response);
+
+        setTaskQuantity(parsedResponse.length);
+        setTasks(parsedResponse);
       }
     }
 
     loadTasks();
-  }, []);
+  }, [profile.id]);
 
   const handleAddTask = useCallback(
     (task: Omit<TaskItemData, 'id'>): void => {
@@ -47,72 +57,160 @@ const Dashboard: React.FC = () => {
           description: task.description,
           deliveryDate: task.deliveryDate,
           completionDate: task.completionDate,
+          isOpen: true,
         };
 
-        localStorage.setItem(`@Task:${newTask.id}`, JSON.stringify(newTask));
+        const allTasks = [newTask];
+        const storagedUserTasks = localStorage.getItem(
+          `@UserTasks:${profile.id}`,
+        );
+
+        if (storagedUserTasks) {
+          const parsedUserTasks = JSON.parse(storagedUserTasks);
+
+          if (storagedUserTasks) {
+            parsedUserTasks.push(newTask);
+          }
+          localStorage.setItem(
+            `@UserTasks:${profile.id}`,
+            JSON.stringify(parsedUserTasks),
+          );
+
+          setTaskQuantity(parsedUserTasks.length);
+        } else {
+          localStorage.setItem(
+            `@UserTasks:${profile.id}`,
+            JSON.stringify(allTasks),
+          );
+          setTaskQuantity(1);
+        }
 
         setTasks([...tasks, newTask]);
       } catch (err) {
         console.log(err);
       }
     },
-    [tasks],
+    [tasks, profile.id],
   );
 
   const handleUpdateTask = useCallback(
     (task: TaskItemData): void => {
       try {
-        localStorage.removeItem(`@Task:${task.id}`);
-        localStorage.setItem(`@Task:${task.id}`, JSON.stringify(task));
-
-        const response = localStorage.getItem(`@task:${task.id}`);
+        const newTask = {
+          id: task.id,
+          title: task.title,
+          description: task.description,
+          deliveryDate: task.deliveryDate,
+          completionDate: task.completionDate,
+          isOpen: true,
+        };
+        const response = localStorage.getItem(`@UserTasks:${profile.id}`);
 
         if (response) {
+          const parsedResponse = JSON.parse(response);
+
+          const responseIndex = parsedResponse.findIndex(
+            (res: TaskItemData) => res.id === task.id,
+          );
+
+          const taskIndex = tasks.findIndex(
+            taskSelected => taskSelected.id === task.id,
+          );
+
+          parsedResponse.splice(responseIndex, 1);
+          tasks.splice(taskIndex, 1);
+
+          setTasks([newTask, ...tasks]);
+          parsedResponse.unshift(newTask);
+
+          localStorage.setItem(
+            `@UserTasks:${profile.id}`,
+            JSON.stringify(parsedResponse),
+          );
+
           setEditingTask(JSON.parse(response));
         }
-
-        const newTask = {
-          id: editingTask.id,
-          title: editingTask.title,
-          description: editingTask.description,
-          deliveryDate: editingTask.deliveryDate,
-          completionDate: editingTask.completionDate,
-        };
-
-        const taskIndex = tasks.findIndex(
-          taskSelected => taskSelected.id === task.id,
-        );
-        tasks.splice(taskIndex, 1);
-
-        setTasks([...tasks, newTask]);
       } catch (err) {
         console.log(err);
       }
     },
-    [
-      tasks,
-      editingTask.id,
-      editingTask.title,
-      editingTask.description,
-      editingTask.deliveryDate,
-      editingTask.completionDate,
-    ],
+    [tasks, profile.id],
   );
 
   const handleDeleteTask = useCallback(
     (id: string): void => {
       try {
-        const taskIndex = tasks.findIndex(task => task.id === id);
-        tasks.splice(taskIndex, 1);
+        const response = localStorage.getItem(`@UserTasks:${profile.id}`);
 
-        localStorage.removeItem(`@Task:${id}`);
+        if (response) {
+          const parsedResponse = JSON.parse(response);
 
-        setTasks([...tasks]);
+          const responseIndex = parsedResponse.findIndex(
+            (res: TaskItemData) => res.id === id,
+          );
+
+          parsedResponse.splice(responseIndex, 1);
+
+          localStorage.setItem(
+            `@UserTasks:${profile.id}`,
+            JSON.stringify(parsedResponse),
+          );
+
+          const taskIndex = tasks.findIndex(task => task.id === id);
+          tasks.splice(taskIndex, 1);
+
+          localStorage.removeItem(`@Task:${id}`);
+
+          setTasks([...tasks]);
+          setTaskQuantity(parsedResponse.length);
+        }
       } catch (err) {
         console.log(err);
       }
     },
-    [tasks],
+    [tasks, profile.id],
+  );
+
+  const handleFinishTask = useCallback(
+    (task: TaskItem) => {
+      const newTask = {
+        id: task.id,
+        title: task.title,
+        description: task.description,
+        deliveryDate: task.deliveryDate,
+        completionDate: `${new Date()
+          .getDate()
+          .toString()}/${new Date()
+          .getMonth()
+          .toString()}/${new Date().getFullYear().toString()}`,
+        isOpen: false,
+      };
+      const response = localStorage.getItem(`@UserTasks:${profile.id}`);
+
+      if (response) {
+        const parsedResponse = JSON.parse(response);
+
+        const responseIndex = parsedResponse.findIndex(
+          (res: TaskItemData) => res.id === task.id,
+        );
+
+        const taskIndex = tasks.findIndex(
+          taskSelected => taskSelected.id === task.id,
+        );
+
+        parsedResponse.splice(responseIndex, 1);
+        tasks.splice(taskIndex, 1);
+
+        setTasks([newTask, ...tasks]);
+        parsedResponse.unshift(newTask);
+
+        localStorage.setItem(
+          `@UserTasks:${profile.id}`,
+          JSON.stringify(parsedResponse),
+        );
+      }
+    },
+    [profile.id, tasks],
   );
 
   const toggleModal = useCallback(() => {
@@ -138,7 +236,7 @@ const Dashboard: React.FC = () => {
         <Main>
           <LeftSide>
             <ProfileData
-              avatarUrl="https://avatars1.githubusercontent.com/u/12235370?s=460&u=1e4d49d385dbf5a15cc000377f8757a39822c554&v=4"
+              avatarUrl={logoImg}
               name="Anderson Pacheco"
               email="email@email.com"
               birth="10/10/1999"
@@ -160,7 +258,18 @@ const Dashboard: React.FC = () => {
               handleUpdateTask={handleUpdateTask}
             />
             <Tasks>
-              <h1>Your last tasks</h1>
+              <header>
+                <h1>
+                  <span>{taskQuantity}</span> Tarefas cadastradas
+                </h1>
+
+                <button type="submit" onClick={toggleModal}>
+                  <p className="text">Nova tarefa</p>
+                  <div className="icon">
+                    <FiCheckSquare size={24} />
+                  </div>
+                </button>
+              </header>
 
               <div>
                 {tasks &&
@@ -169,6 +278,7 @@ const Dashboard: React.FC = () => {
                       key={task.id}
                       task={task}
                       handleEditTask={handleEditTask}
+                      handleFinishTask={handleFinishTask}
                       handleDeleteTask={handleDeleteTask}
                     />
                   ))}

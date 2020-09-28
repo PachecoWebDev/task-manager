@@ -4,11 +4,11 @@ import { persistReducer } from 'redux-persist';
 export default reducers => {
   const persistedReducer = persistReducer(
     {
-      key: 'tasks',
+      key: 'taskManager',
       storage,
-      whitelist: ['suth', 'user'],
+      whitelist: ['auth', 'user'],
     },
-    reducers,
+    reducers
   );
 
   return persistedReducer;

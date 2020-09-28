@@ -1,10 +1,11 @@
 import React, { useRef, useCallback } from 'react';
-
+import * as Yup from 'yup';
 import { FiCheckSquare } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from './styles';
 import Modal from '../Modal';
 import Input from '../Input';
+import getValidationErrors from '../../utils/getValidationErrors';
 
 interface TaskItem {
   id: string;
@@ -12,6 +13,7 @@ interface TaskItem {
   description?: string;
   deliveryDate: string;
   completionDate?: string;
+  isOpen: boolean;
 }
 
 interface IModalProps {
@@ -27,6 +29,7 @@ interface IEditTaskData {
   description?: string;
   deliveryDate: string;
   completionDate?: string;
+  isOpen: boolean;
 }
 
 const ModalEditTask: React.FC<IModalProps> = ({
@@ -39,9 +42,26 @@ const ModalEditTask: React.FC<IModalProps> = ({
 
   const handleSubmit = useCallback(
     async (data: IEditTaskData) => {
-      handleUpdateTask(data);
+      try {
+        const schema = Yup.object().shape({
+          title: Yup.string().required('Este campo é obrgigatório'),
+          description: Yup.string(),
+          deliveryDate: Yup.string().required('Este campo é obrgigatório'),
+          completionDate: Yup.string(),
+        });
 
-      setIsOpen();
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+
+        handleUpdateTask(data);
+        setIsOpen();
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+          formRef.current?.setErrors(errors);
+        }
+      }
     },
     [handleUpdateTask, setIsOpen],
   );
@@ -51,6 +71,7 @@ const ModalEditTask: React.FC<IModalProps> = ({
       <Form ref={formRef} onSubmit={handleSubmit} initialData={editingTask}>
         <h1>Editar tarefa</h1>
 
+        <Input name="id" value={editingTask.id} hidden />
         <Input name="title" placeholder="Título da tarefa" />
         <Input name="description" placeholder="Descrição" />
 
