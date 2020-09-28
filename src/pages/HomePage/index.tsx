@@ -4,6 +4,7 @@ import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { differenceInCalendarDays } from 'date-fns';
 import { validate } from 'gerador-validador-cpf';
+import { uuid } from 'uuidv4';
 
 import {
   FiLock,
@@ -82,13 +83,18 @@ const HomePage: React.FC = () => {
               return days > twelveYears;
             },
           ),
-          cpf: Yup.string()
-            .max(11)
-            .test('cpfValidation', 'CPF inválido', cpf => {
-              const validation = validate(cpf);
+          cpf: Yup.string().test('cpfValidation', 'CPF inválido', cpf => {
+            if (cpf !== '') {
+              const cpfValidation = validate(cpf);
 
-              return validation;
-            }),
+              if (cpfValidation === false) {
+                return cpfValidation;
+              }
+
+              return cpfValidation;
+            }
+            return true;
+          }),
           cep: Yup.string(),
           address: Yup.string(),
           number: Yup.string(),
@@ -99,8 +105,11 @@ const HomePage: React.FC = () => {
           abortEarly: false,
         });
 
+        const id = uuid();
+
         dispatch(
           signUpRequest({
+            id,
             name: data.name,
             email: data.email,
             birth: data.birth,

@@ -7,7 +7,11 @@ import persistReducers from './persistReducers.js';
 import rootReducer from './modules/rootReducer.js';
 import rootSaga from './modules/rootSaga.js';
 
-const sagaMiddleware = createSagaMiddleware();
+const sagaMonitor = process.env.NODE_ENV === 'development'
+  ? console.tron.createSagaMonitor()
+  : null;
+
+const sagaMiddleware = createSagaMiddleware({ sagaMonitor });
 
 const middlewares = [sagaMiddleware];
 

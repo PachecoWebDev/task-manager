@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FiLock, FiMail } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
@@ -26,6 +26,7 @@ interface LogInFormData {
 
 const LogIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const loading = useSelector((state: any) => state.auth.loading);
 
   const dispatch = useDispatch();
 
@@ -48,7 +49,7 @@ const LogIn: React.FC = () => {
           abortEarly: false,
         });
 
-        await dispatch(
+        dispatch(
           signInRequest({
             email: data.login,
             password: data.senha,
@@ -92,7 +93,9 @@ const LogIn: React.FC = () => {
               placeholder="Senha"
             />
 
-            <Button type="submit">Entrar</Button>
+            <Button type="submit">
+              {loading ? 'Carregando...' : 'Entrar'}
+            </Button>
           </Form>
         </AnimationContainer>
       </Content>

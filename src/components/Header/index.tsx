@@ -1,19 +1,21 @@
 import React, { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 
-import { useAuth } from '../../hooks/auth';
+import { signOut } from '../../store/modules/auth/actions.js';
 
 import logoImg from '../../assets/tasks.svg';
 
 import { Container, HeaderList } from './styles';
 
 const Header: React.FC = () => {
-  const { nome, logOut } = useAuth();
+  const dispatch = useDispatch();
+  const profile = useSelector((state: any) => state.user.profile);
 
   const handleLogOut = useCallback(() => {
-    logOut();
-  }, [logOut]);
+    dispatch(signOut());
+  }, [dispatch]);
 
   return (
     <Container>
@@ -22,18 +24,18 @@ const Header: React.FC = () => {
           <img src={logoImg} alt="World Map" />
         </Link>
 
-        {nome ? (
+        {profile ? (
           <HeaderList>
             <li>
               <span>
-                Bem vindo, <strong>{nome}!</strong>
+                Bem vindo, <strong>{profile.name}!</strong>
               </span>
             </li>
-            <li>
-              <button type="button" onClick={() => handleLogOut()}>
+            {/* <li>
+              <button type="button" onClick={handleLogOut}>
                 <FiLogOut />
               </button>
-            </li>
+            </li> */}
           </HeaderList>
         ) : (
           <HeaderList>
