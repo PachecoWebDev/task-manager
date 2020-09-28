@@ -11,17 +11,17 @@ import { signInRequest } from '../../store/modules/auth/actions.js';
 
 import getValidationErrors from '../../utils/getValidationErrors';
 
-import { Container, Content, AnimationContainer } from './styles';
-
-import LogoImg from '../../assets/tasks.svg';
-
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
 
+import { Container, Content, AnimationContainer } from './styles';
+
+import LogoImg from '../../assets/tasks.svg';
+
 interface LogInFormData {
   login: string;
-  senha: string;
+  password: string;
 }
 
 const LogIn: React.FC = () => {
@@ -35,28 +35,28 @@ const LogIn: React.FC = () => {
 
   const handleSubmit = useCallback(
     async (data: LogInFormData) => {
+      formRef.current?.setErrors({});
+
+      const schema = Yup.object().shape({
+        login: Yup.string()
+          .email('Digite um email válido')
+          .required('Email obrigatório'),
+        password: Yup.string().required('Senha obrigatória'),
+      });
+
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+
       try {
-        formRef.current?.setErrors({});
-
-        const schema = Yup.object().shape({
-          login: Yup.string()
-            .email('Digite um email válido')
-            .required('Email obrigatório'),
-          senha: Yup.string().required('Senha obrigatória'),
-        });
-
-        await schema.validate(data, {
-          abortEarly: false,
-        });
-
         dispatch(
           signInRequest({
             email: data.login,
-            password: data.senha,
+            password: data.password,
           }),
         );
 
-        history.push('dashboard');
+        history.push('login');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -79,7 +79,7 @@ const LogIn: React.FC = () => {
       <Header />
       <Content>
         <AnimationContainer>
-          <img src={LogoImg} alt="Países" />
+          <img src={LogoImg} alt="Task Manager" />
 
           <Form ref={formRef} onSubmit={handleSubmit}>
             <h1>Faça seu login</h1>
@@ -88,7 +88,7 @@ const LogIn: React.FC = () => {
 
             <Input
               type="password"
-              name="senha"
+              name="password"
               icon={FiLock}
               placeholder="Senha"
             />

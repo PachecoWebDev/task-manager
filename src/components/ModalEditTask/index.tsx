@@ -2,10 +2,12 @@ import React, { useRef, useCallback } from 'react';
 import * as Yup from 'yup';
 import { FiCheckSquare } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
-import { Form } from './styles';
+
 import Modal from '../Modal';
 import Input from '../Input';
 import getValidationErrors from '../../utils/getValidationErrors';
+
+import { Form } from './styles';
 
 interface TaskItem {
   id: string;
@@ -44,9 +46,9 @@ const ModalEditTask: React.FC<IModalProps> = ({
     async (data: IEditTaskData) => {
       try {
         const schema = Yup.object().shape({
-          title: Yup.string().required('Este campo é obrgigatório'),
+          title: Yup.string().required('Este campo é obrigatório'),
           description: Yup.string(),
-          deliveryDate: Yup.string().required('Este campo é obrgigatório'),
+          deliveryDate: Yup.string().required('Este campo é obrigatório'),
           completionDate: Yup.string(),
         });
 
@@ -78,7 +80,7 @@ const ModalEditTask: React.FC<IModalProps> = ({
         <Input name="deliveryDate" placeholder="Data de entrega" />
         <Input name="completionDate" placeholder="Data de conclusão" />
 
-        <button type="submit" data-testid="edit-food-button">
+        <button type="submit">
           <div className="text">Editar tarefa</div>
           <div className="icon">
             <FiCheckSquare size={24} />

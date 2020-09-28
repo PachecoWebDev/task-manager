@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 
 import { signOut } from '../../store/modules/auth/actions.js';
@@ -12,16 +12,18 @@ import { Container, HeaderList } from './styles';
 const Header: React.FC = () => {
   const dispatch = useDispatch();
   const profile = useSelector((state: any) => state.user.profile);
+  const history = useHistory();
 
   const handleLogOut = useCallback(() => {
     dispatch(signOut());
-  }, [dispatch]);
+    history.push('/');
+  }, [dispatch, history]);
 
   return (
     <Container>
       <header>
         <Link to="/">
-          <img src={logoImg} alt="World Map" />
+          <img src={logoImg} alt="Task Manager" />
         </Link>
 
         {profile ? (
@@ -31,11 +33,11 @@ const Header: React.FC = () => {
                 Bem vindo, <strong>{profile.name}!</strong>
               </span>
             </li>
-            {/* <li>
+            <li>
               <button type="button" onClick={handleLogOut}>
                 <FiLogOut />
               </button>
-            </li> */}
+            </li>
           </HeaderList>
         ) : (
           <HeaderList>

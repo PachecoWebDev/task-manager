@@ -7,7 +7,6 @@ import {
   Avatar,
   Column,
   BirthIcon,
-  TaskIcon,
   CepIcon,
   AddressIcon,
   CpfIcon,
@@ -18,10 +17,9 @@ interface ProfileProps {
   name: string;
   email: string;
   birth: string;
-  tasks: number;
 }
 
-const ProfileData: React.FC<ProfileProps> = ({ avatarUrl, tasks }) => {
+const ProfileData: React.FC<ProfileProps> = ({ avatarUrl }) => {
   const profile = useSelector((state: any) => state.user.profile);
 
   return (
@@ -50,7 +48,7 @@ const ProfileData: React.FC<ProfileProps> = ({ avatarUrl, tasks }) => {
         </li>
         <li>
           <AddressIcon />
-          <span>Endereço {profile.address}</span>
+          <span>Endereço: {profile.address}</span>
         </li>
         <li>
           <AddressIcon />

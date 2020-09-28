@@ -1,11 +1,5 @@
 import styled, { css } from 'styled-components';
-import {
-  FiSun,
-  FiCheckSquare,
-  FiMap,
-  FiMapPin,
-  FiUserCheck,
-} from 'react-icons/fi';
+import { FiSun, FiMap, FiMapPin, FiUserCheck } from 'react-icons/fi';
 
 const iconsCSS = css`
   width: 16px;
@@ -80,10 +74,6 @@ export const Column = styled.ul`
 `;
 
 export const BirthIcon = styled(FiSun)`
-  ${iconsCSS}
-`;
-
-export const TaskIcon = styled(FiCheckSquare)`
   ${iconsCSS}
 `;
 

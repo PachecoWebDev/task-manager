@@ -10,13 +10,12 @@ export function* signIn({ payload }) {
   const storagedUsers = JSON.parse(localStorage.getItem("@taskUsers"));
 
   const logUser = storagedUsers.filter(user => user.email === email && user.password === password);
-  try {
+
     if (logUser.length > 0) {
       yield put(signInSuccess(logUser[0]));
 
       history.push('dashboard');
-    }
-  } catch (err) {
+    } else {
     toast.error('Falha na autenticação, verifique seus dados');
     yield put(singFailure());
   }
@@ -55,7 +54,6 @@ export function* signUp({ payload }) {
 }
 
 export function signOut() {
-  console.log('sair');
   history.push('/login');
 }
 

@@ -44,7 +44,7 @@ export const HeaderList = styled.ul`
       margin: 10px 0 0 10px;
 
       svg {
-        font-size: 24px;
+        font-size: 32px;
         color: #ffab28;
         transition: color 0.2s;
       }

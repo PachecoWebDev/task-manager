@@ -1,11 +1,13 @@
 import React, { useCallback, useRef, ChangeEvent, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { differenceInCalendarDays } from 'date-fns';
-import { validate } from 'gerador-validador-cpf';
 import { uuid } from 'uuidv4';
-
+import axios from 'axios';
+import { validate } from 'gerador-validador-cpf';
 import {
   FiLock,
   FiMail,
@@ -16,15 +18,14 @@ import {
   FiUserCheck,
 } from 'react-icons/fi';
 
-import { FormHandles } from '@unform/core';
+import { useToast } from '../../hooks/toast';
 
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
 import getValidationErrors from '../../utils/getValidationErrors';
+import { signUpRequest } from '../../store/modules/auth/actions.js';
 
 import logoImg from '../../assets/tasks.svg';
 
@@ -35,8 +36,6 @@ import {
   FormContainer,
   AnimationContainer,
 } from './styles';
-import { useToast } from '../../hooks/toast';
-import { signUpRequest } from '../../store/modules/auth/actions.js';
 
 interface SignUpFormData {
   name: string;
@@ -72,7 +71,7 @@ const HomePage: React.FC = () => {
           email: Yup.string().email().required('Campo obrigatório'),
           birth: Yup.string().test(
             'birthValidate',
-            'Apenas maior de 12 anos podem realizar o cadastro',
+            'Apenas maiores de 12 anos podem realizar o cadastro',
             () => {
               const days = differenceInCalendarDays(
                 new Date(),
@@ -169,7 +168,7 @@ const HomePage: React.FC = () => {
           <PageTitle>
             <img src={logoImg} alt="Logo Your Tasks" />
             <h1>YourTasks</h1>
-            <p>Your favorite task manager for everything</p>
+            <p>Your favorite task manager for everything!</p>
           </PageTitle>
 
           <FormContainer>

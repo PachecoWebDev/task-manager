@@ -22,11 +22,17 @@
 
 Este teste é composto pela construção de um sistema para gerenciamento de tarefas
 
-## Tecnologias obrigatórias
+## :hammer: Tecnologias Empregadas
 
-- [x] React
-- [x] Redux
-- [x] Redux persist
+Este projeto foi desenvolvido com as seguintes Ferramentas:
+
+- [TypeScript][typescript]
+- [React][reactjs]
+- [Redux][redux]
+- [Redux Saga][reduxsaga]
+- [Styled Components][sc]
+- [Yup][yup]
+- [VS Code][vs]
 
 ## Home Page
 <div align="center">
@@ -50,23 +56,16 @@ Este teste é composto pela construção de um sistema para gerenciamento de tar
 
 ## Concluir Tarefa
 <div align="center">
-    <img alt="Your Tasks" title="Your Tasks" src=".github/checktask.jpeg"/>
+    <img alt="Your Tasks" title="Your Tasks" src=".github/checkTask.jpeg"/>
 </div>
 
-
-## :hammer: Tecnologias
-
-Este projeto foi desenvolvido com as seguintes Ferramentas:
-
-- [TypeScript][typescript]
-- [React][reactjs]
-- [Redux][redux]
-- [Redux Saga][reduxsaga]
-- [Styled Components][sc]
-- [Yup][yup]
-- [VS Code][vs]
-
 ## Requisitos
+
+## Tecnologias obrigatórias
+
+- [x] React
+- [x] Redux
+- [x] Redux persist
 
 ### Home page igual a página do github
 
@@ -92,8 +91,8 @@ tarefa;
 
 ### Extras
 
-- [ ] Testes unitários dos componentes
 - [x] React Hooks
+- [ ] Testes unitários dos componentes
 
 ## 🚀 Como rodar este projeto
 

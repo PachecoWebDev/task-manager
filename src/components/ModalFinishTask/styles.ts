@@ -12,7 +12,7 @@ export const Container = styled.div`
     margin-bottom: 40px;
   }
 
-  .buttonsCotainer {
+  .buttonsContainer {
     display: flex;
     align-items: center;
 

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-
 import { FiCheckSquare } from 'react-icons/fi';
+
 import Modal from '../Modal';
 
 import { Container } from './styles';
@@ -40,7 +40,7 @@ const ModalFinishTask: React.FC<IModalProps> = ({
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <Container>
         <h1>Deseja concluir a tarefa</h1>
-        <div className="buttonsCotainer">
+        <div className="buttonsContainer">
           <button onClick={setFinishTask} type="button">
             <p className="text">Concluir</p>
             <div className="icon">
